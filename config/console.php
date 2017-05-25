@@ -9,6 +9,11 @@ $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module'
+        ]
+    ],
     'controllerNamespace' => 'app\commands',
     'components' => [
         'cache' => [

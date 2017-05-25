@@ -19,15 +19,20 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    
+    <?= Html::jsFile('@web/assets/56c733b2/jquery.min.js'); ?>
+
+    <?= Html::jsFile('@web/js/index.js'); ?>
+    <?= Html::cssFile('@web/css/origin.css'); ?>
     <?php $this->head() ?>
 </head>
-<body>
+<body style="background: url(/images/bg.jpg) no-repeat center center fixed;">
 <?php $this->beginBody() ?>
 
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Obsecao',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -37,8 +42,18 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Sobre', 'url' => ['/site/about']],
+            ['label' => 'Contatos', 'url' => ['/site/contact']],
+            [
+                'label' => 'Cadastros',
+                'items' => [
+                    ['label' => 'Usuario', 'url' => '#'],
+                    ['label' => 'Cães', 'url' => '#'],
+                    ['label' => 'Adotante', 'url' => '#'],
+                    ['label' => 'Anúncio', 'url' => '#'],
+                    ['label' => 'Depoimento', 'url' => '#']
+                ]
+            ],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -66,7 +81,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Obsecao <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
