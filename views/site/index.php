@@ -3,7 +3,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Obsecao';
 ?>
 <div class="site-index" style="z-index:2;">
 

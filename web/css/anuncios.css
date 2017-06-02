@@ -1,0 +1,23 @@
+.carousel-caption{
+    left:12% !important;
+    text-align:left !important;
+    right:40% !important;
+    top:-25px !important;
+}
+.carousel-control.left{
+    line-height:300px !important;
+    text-indent:-65px !important;
+}
+.carousel-control.right{
+    line-height:300px !important;
+    text-indent:35px !important;
+}
+.carousel-indicators{
+    visibility:hidden !important;
+}
+.site-anuncio{
+    color:white !important;
+}
+.label-dog{
+    color:#00ffe4 !important;
+}
