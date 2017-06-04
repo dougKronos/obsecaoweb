@@ -18,13 +18,13 @@ class m170602_010105_endereco_tb_create extends Migration {
     public function safeUp(){
         $this->createTable('endereco', [
             'nEnderecoID' => $this->primaryKey(255),
-            'strLogradouro' => $this->string(100),
-            'nNumero' => $this->integer(255),
-            'strBairro' => $this->string(99),
+            'strLogradouro' => $this->string(100) . ' NOT NULL',
+            'nNumero' => $this->integer(255) . ' NOT NULL',
+            'strBairro' => $this->string(99) . ' NOT NULL',
             'strComplemento' => $this->string(99),
-            'nCidadeID' => $this->integer(255),
-            'dtCriacao' => $this->datetime(),
-            'dtAtualizacao' => $this->datetime()
+            'nCidadeID' => $this->integer(255) . ' NOT NULL',
+            'dtCriacao' => $this->datetime() . ' NOT NULL',
+            'dtAtualizacao' => $this->datetime() . ' NOT NULL'
         ]);
         $this->addForeignKey('endereco_cidade_fk', 'endereco', 'nCidadeID', 'cidade', 'nCidadeID');
     }

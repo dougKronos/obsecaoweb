@@ -2,19 +2,19 @@
 
 namespace app\controllers;
 
-use app\models\Cao;
+use app\models\User;
 
-class CaoController extends \yii\web\Controller{
+class UserController extends \yii\web\Controller{
 
 	public function actionDetalhe(){
 		return $this->render('detalhe');
 	}
 
 	public function actionLista(){
-		$model = new Cao();
+		$model = new User();
 
 		return $this->render('lista', [
-            'provider' => $model->getGridCaes(5),
+            'provider' => $model->getGridUsers(5),
         ]);
 	}
 

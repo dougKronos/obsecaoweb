@@ -2,19 +2,19 @@
 
 namespace app\controllers;
 
-use app\models\Cao;
+use app\models\Recusa;
 
-class CaoController extends \yii\web\Controller{
+class RecusaController extends \yii\web\Controller{
 
 	public function actionDetalhe(){
 		return $this->render('detalhe');
 	}
 
 	public function actionLista(){
-		$model = new Cao();
+		$model = new Recusa();
 
 		return $this->render('lista', [
-            'provider' => $model->getGridCaes(5),
+            'provider' => $model->getGridRecusas(5),
         ]);
 	}
 

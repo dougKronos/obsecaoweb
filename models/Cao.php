@@ -3,8 +3,8 @@
 namespace app\models;
 
 use Yii;
-use \yii\db\Query;
-use yii\web\UploadedFile;
+use yii\db\Query;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "cao".
@@ -13,141 +13,109 @@ use yii\web\UploadedFile;
  * @property string $strNome
  * @property string $cSexo
  * @property string $strRaca
- * @property string $nIdade
- * @property string $strCaracteristicas
- * @property string $strCaracteristicasComport
+ * @property integer $nIdadeAno
+ * @property integer $nIdadeMes
+ * @property integer $strCaracteristicas
+ * @property integer $strComportamentais
  * @property string $strNomeFoto
+ * @property integer $nProtetorID
+ * @property integer $nAdotanteID
  * @property string $dtCriacao
  * @property string $dtAtualizacao
+ *
+ * @property Anuncio[] $anuncios
+ * @property Adotante $nAdotante
+ * @property Protetor $nProtetor
+ * @property Depoimento[] $depoimentos
+ * @property Recusa[] $recusas
  */
-class Cao extends \yii\db\ActiveRecord {
+class Cao extends \yii\db\ActiveRecord{
 
-    /**
-     * @var UploadedFile
-     */
-    public $imageFile;
+	/**
+	 * @inheritdoc
+	 */
+	public static function tableName(){
+		return 'cao';
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName() {
-        return 'cao';
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function rules(){
+		return [
+			[['nIdadeAno', 'nIdadeMes', 'strCaracteristicas', 'strComportamentais', 'nProtetorID', 'nAdotanteID'], 'integer'],
+			[['nProtetorID'], 'required'],
+			[['dtCriacao', 'dtAtualizacao'], 'safe'],
+			[['strNome', 'strRaca'], 'string', 'max' => 50],
+			[['cSexo'], 'string', 'max' => 1],
+			[['strNomeFoto'], 'string', 'max' => 100],
+			[['nAdotanteID'], 'exist', 'skipOnError' => true, 'targetClass' => Adotante::className(), 'targetAttribute' => ['nAdotanteID' => 'nAdotanteID']],
+			[['nProtetorID'], 'exist', 'skipOnError' => true, 'targetClass' => Protetor::className(), 'targetAttribute' => ['nProtetorID' => 'nProtetorID']],
+		];
+	}
 
-    /**
-     * @return array the validation rules.
-     */
-    public function rules() {
-        return [
-            [['strCaracteristicas', 'strCaracteristicasComport'], 'required', 'message' => 'Campo Obrigatório!'],
-            [['strNome', 'strRaca'], 'string', 'max' => 50],
-            [['cSexo'], 'string', 'max' => 1],
-            [['strNome'], 'required', 'message' => 'Digite um nome.'],
-            [['cSexo'], 'required', 'message' => 'Escolha um sexo.'],
-            [['strRaca'], 'required', 'message' => 'Digite o nome da Raça ou "Vira-lata".'],
-            
-            [['nIdadeMeses'], 'required', 'message' => 'Digite a idade em meses.'],            
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeLabels(){
+		return [
+			'nCaoID' => 'N Cao ID',
+			'strNome' => 'Str Nome',
+			'cSexo' => 'C Sexo',
+			'strRaca' => 'Str Raca',
+			'nIdadeAno' => 'N Idade Ano',
+			'nIdadeMes' => 'N Idade Mes',
+			'strCaracteristicas' => 'Str Caracteristicas',
+			'strComportamentais' => 'Str Comportamentais',
+			'strNomeFoto' => 'Str Nome Foto',
+			'nProtetorID' => 'N Protetor ID',
+			'nAdotanteID' => 'N Adotante ID',
+			'dtCriacao' => 'Dt Criacao',
+			'dtAtualizacao' => 'Dt Atualizacao',
+		];
+	}
 
-            [['nIdadeAnos'], 'required', 'message' => 'Digite a idade em anos.'],
-            [['nIdadeAnos', 'nIdadeMeses'], 'string', 'max' => 25],
-            
-            [['strCaracteristicas', 'strCaracteristicasComport'], 'string', 'max' => 255],
-            [['imageFile'], 'required', 'message' => 'Selecione uma foto.'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg']
-        ];
-    }
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getAnuncios(){
+		return $this->hasMany(Anuncio::className(), ['nCaoID' => 'nCaoID']);
+	}
 
-    /**
-     * @inheritdoc
-     */
-    // public function rules() {
-    //     return [
-    //         [['dtCriacao', 'dtAtualizacao'], 'safe'],
-    //         [['strNome', 'strRaca'], 'string', 'max' => 50],
-    //         [['cSexo'], 'string', 'max' => 1],
-    //         [['nIdade'], 'string', 'max' => 25],
-    //         [['strCaracteristicas', 'strCaracteristicasComport'], 'string', 'max' => 255],
-    //         [['strNomeFoto'], 'string', 'max' => 70],
-    //     ];
-    // }
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getNAdotante(){
+		return $this->hasOne(Adotante::className(), ['nAdotanteID' => 'nAdotanteID']);
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels() {
-        return [
-            'nCaoID' => 'CaoID',
-            'strNome' => 'Nome',
-            'cSexo' => 'Sexo',
-            'strRaca' => 'Raça',
-            'nIdadeAnos' => 'Anos de Idade',
-            'nIdadeMeses' => 'Meses de Idade',
-            'strCaracteristicas' => 'Caracteristicas Físicas',
-            'strCaracteristicasComport' => 'Caracteristicas Comportamentais',
-            'strNomeFoto' => 'NomeFoto',
-            'dtCriacao' => 'Data de Cadastro',
-            'dtAtualizacao' => 'Data de Atualizacao',
-            'imageFile' => 'Foto do Cão'
-        ];
-    }
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getNProtetor(){
+		return $this->hasOne(Protetor::className(), ['nProtetorID' => 'nProtetorID']);
+	}
 
-    /*
-    *  Retorna todos os caes do banco de dados
-    */
-    public function listAll(){
-        $caninos = (new Query())
-                ->select([
-                    'nCaoID',
-                    'strNome',
-                    'cSexo',
-                    'strRaca',
-                    'nIdadeAnos',
-                    'nIdadeMeses',
-                    'strCaracteristicas',
-                    'strCaracteristicasComport',
-                    'strNomeFoto'
-                ])
-                ->from('cao')
-                ->orderBy('dtCriacao ASC')
-                ->all();
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getDepoimentos(){
+		return $this->hasMany(Depoimento::className(), ['nCaoID' => 'nCaoID']);
+	}
 
-        $items = [];
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getRecusas(){
+		return $this->hasMany(Recusa::className(), ['nCaoID' => 'nCaoID']);
+	}
 
-        function defineSex($cao){
-            return $cao['cSexo'] == 'M' ? 'Macho' : 'Fêmea';
-        }
-
-        foreach ($caninos as $cao){
-            $cao['cSexo'] = defineSex($cao);
-        }
-        return $caninos;
-    }
-
-    public function upload() {
-       // if ($this->validate()) {
-       //     exit('Foi 2');
-           // $number = $this->getLastCao() + 1;
-           $number = $this->getLastCao()+1;
-           // exit(\Yii::getAlias('@app'));
-           // exit(var_dump($this->imageFile));
-           // exit(var_dump($this['imageFile'][0]));
-           $this->imageFile->saveAs(\Yii::getAlias('@app').'/web/images/fotosAnuncios/anuncio' . "$number." . $this->imageFile->extension);
-           return true;
-       // } else {
-       //     return false;
-       // }
-   }
-
-    public function getLastCao(){
-        return \Yii::$app->db
-            ->createCommand('SELECT MAX(nCaoID) FROM cao;')
-            ->queryScalar();
-
-        // return (new Query())
-                // ->select([
-                    // 'MAX(nCaoID)'
-                // ])
-                // ->from('cao')
-                // ->queryScalar();
-    }
+	public function getGridCaes($nPagination){
+		return new ActiveDataProvider([
+			'query' => (new Query())->from('cao'),
+			'pagination' => [
+				'pageSize' => $nPagination,
+			],
+		]);
+	}
 }

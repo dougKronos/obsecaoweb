@@ -45,25 +45,53 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+            /*
+            /*    Abaixo, na url, '/site' é o primeiro nome do Controller
+             */
             ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Anúncios', 'url' => ['/anuncio/lista']],   
+            ['label' => 'Depoimentos', 'url' => ['/depoimento/lista']],
+            ['label' => 'Notícias', 'url' => ['/noticia/lista']],
             // ['label' => 'Anúncios', 'url' => '/index.php?r=site/anuncios'],
-            ['label' => 'Anúncios', 'url' => ['/cao/anuncios']],
-            ['label' => 'Sobre', 'url' => ['/site/about']],
-            // [
-            //     'label' => 'Gerenciar',
-            //     'items' => [
+            // ['label' => 'Anúncios', 'url' => ['/cao/anuncios']],
+            // ['label' => 'Sobre', 'url' => ['/site/about']],
+            [
+             'label' => 'Gerenciar',
+                'items' => [
+                    ['label' => 'Permissões', 
+                        'items' => [
+                            ['label' => 'Anúncios', 'url' => ['/anuncio/permissoes']],
+                            ['label' => 'Depoimentos', 'url' => ['/depoimento/permissoes']],
+                        ]
+                    ],
+                    ['label' => 'Protetores', 'url' => ['/protetor/lista']],
+                    ['label' => 'Adotantes', 'url' => ['/adotante/lista']],
+                    ['label' => 'Cães', 'url' => ['/cao/lista']],
+                    ['label' => 'Usuários', 'url' => ['/user/lista']],
+                    ['label' => 'Recusas', 'url' => ['/recusa/lista']],
+                    ['label' => 'Administradores', 'url' => ['/administrador/lista'],
+                        'visible' => 
+                            !Yii::$app->user->isGuest &&
+                            Yii::$app->user->identity->isDiretor()
+                    ],
             //         ['label' => 'Minha Conta', 'url' => '#', 'visible' => (!Yii::$app->user->isGuest)],
             //         ['label' => 'Administrativo', 'url' => '#', 'visible' => (!Yii::$app->user->isGuest)]
-            //     ]
-            // ],
-            ['label' => 'Contatos', 'url' => ['/site/contact']],
+                ],
+                'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdministrador()
+            ],
+            // ['label' => 'Contatos', 'url' => ['/site/contact']],
+            
+
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => 'SignIn', 'url' => ['/site/login']]
+                // ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 Html::tag('li',
                     Html::beginForm(['/site/logout'], 'post').
                     Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
+                        // 'Logout (' . Yii::$app->user->identity->username . ')',
+                        // 'SignOut (' . Yii::$app->user->identity->strNome . ')',
+                        'SignOut (' . preg_replace('~^(.*)(\s.*)$~', '$1', Yii::$app->user->identity->strNome) . ')',
                         ['class' => 'btn btn-link logout']
                     ).
                     Html::endForm()   

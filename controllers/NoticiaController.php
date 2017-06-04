@@ -2,19 +2,20 @@
 
 namespace app\controllers;
 
-use app\models\Cao;
+use app\models\Noticia;
 
-class CaoController extends \yii\web\Controller{
+
+class NoticiaController extends \yii\web\Controller{
 
 	public function actionDetalhe(){
 		return $this->render('detalhe');
 	}
 
 	public function actionLista(){
-		$model = new Cao();
+		$model = new Noticia();
 
 		return $this->render('lista', [
-            'provider' => $model->getGridCaes(5),
+            'provider' => $model->getGridNoticias(5),
         ]);
 	}
 

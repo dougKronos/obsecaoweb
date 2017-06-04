@@ -6,7 +6,8 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
+// use app\models\LoginForm;
+use app\models\UserForm;
 use app\models\ContactForm; 
 
 class SiteController extends Controller
@@ -74,13 +75,46 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        $model = new UserForm(['scenario' => 'login']);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->login())            
+                return $this->redirect('secure');
+
+            // if($model->validate()){
+            //     return;
+            // }
         }
-        return $this->render('login', [
+        return $this->render('forms/LoginForm', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Login action.
+     *
+     * @return string
+     */
+    public function actionRegister(){
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new UserForm(['scenario' => 'register']);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->validate()){
+                
+                return;
+            }
+        }
+        return $this->render('forms/RegisterForm', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionSecure(){
+        echo "<pre>";
+            \yii\helpers\VarDumper::dump(\Yii:: $app->user->identity->attributes);
+        echo "</pre>";
     }
 
     /**
