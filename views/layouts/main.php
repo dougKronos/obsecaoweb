@@ -21,7 +21,7 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     
-    <?= Html::jsFile('@web/assets/56c733b2/jquery.min.js'); ?>
+    <?= Html::jsFile('@web/js/jquery-3.2.1.min.js'); ?>
 
     <?= Html::jsFile('@web/js/index.js'); ?>
     <?= Html::cssFile('@web/css/origin.css'); ?>

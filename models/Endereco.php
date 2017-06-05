@@ -33,12 +33,14 @@ class Endereco extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
-			[['strLogradouro', 'nNumero', 'strBairro', 'nCidadeID'], 'required'],
-			[['nNumero', 'nCidadeID'], 'integer'],
+			[['strLogradouro'], 'required', 'on' => 'register', 'message' => 'O endereço é obrigatório!'],
+			[['nNumero'], 'required', 'on' => 'register', 'message' => 'O número é obrigatório!'],
+			[['strBairro'], 'required', 'on' => 'register', 'message' => 'O bairro é obrigatório!'],
+			// [['nNumero', 'nCidadeID'], 'integer'],
+			[['strLogradouro'], 'string', 'max' => 100, 'on' => 'register', 'message' => 'O Máximo de caracteres permitidos é 100!'],
+			[['strBairro', 'strComplemento'], 'string', 'max' => 99, 'on' => 'register', 'message' => 'O Máximo de caracteres permitidos é 99!'],
 			// [['dtCriacao', 'dtAtualizacao'], 'safe'],
-			[['strLogradouro'], 'string', 'max' => 100],
-			[['strBairro', 'strComplemento'], 'string', 'max' => 99],
-			[['nCidadeID'], 'exist', 'skipOnError' => true, 'targetClass' => Cidade::className(), 'targetAttribute' => ['nCidadeID' => 'nCidadeID']],
+			[['nCidadeID'], 'exist', 'skipOnError' => true, 'targetClass' => Cidade::className(), 'targetAttribute' => ['nCidadeID' => 'nCidadeID']]
 		];
 	}
 

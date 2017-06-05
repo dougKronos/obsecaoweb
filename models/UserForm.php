@@ -29,14 +29,15 @@ class UserForm extends \yii\base\Model{
 
 	// Endereço
 	public $nEstadoID;
-	public $strLogradouro;
-	public $nNumero;
-	public $strBairro;
-	public $strComplemento;
 	public $nCidadeID;
 
 	public $strIdCidade;
 	public $strIdEstado;
+
+	public $strLogradouro;
+	public $nNumero;
+	public $strBairro;
+	public $strComplemento;
 
 
 	/**

@@ -171,7 +171,11 @@ $this->title = 'Registrar Conta';
 						<option ng-repeat="cidade in arrCidade[idEstado]" value="{{cidade.nCidadeID}}">{{cidade.strNome}}</option>
 					</select>'
 
-					// State and Cities
+
+
+					
+					
+
 
 					,['class'=>'fields1', 'ng-controller'=>'checkStCyCtrl']);
 			echo
@@ -182,6 +186,12 @@ $this->title = 'Registrar Conta';
 						'mask' => '(99) 99999-9999',
 						'clientOptions' => ['clearIncomplete' => true]
 					]).
+					$form->field($model, 'strLogradouro')->textInput().
+					$form->field($model, 'nNumero')->widget(\yii\widgets\MaskedInput::className(), [
+						'mask' => '999999'
+					]).
+					$form->field($model, 'strBairro')->textInput().
+					$form->field($model, 'strComplemento')->textInput().
 					$form->field($model, 'strDetalhesLocal')->textarea(['rows' => '6']).
 
 					'<div class="form-group">'.

@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 // use app\models\LoginForm;
 use app\models\User;
+use app\models\Endereco;
 use app\models\Protetor;
 use app\models\Adotante;
 use app\models\UserForm;
@@ -132,6 +133,14 @@ class SiteController extends Controller
 						if($adotanteModel->validate()){
 							// $adotanteModel->save();
 							// $fkModel = $adotanteModel;
+						} else {
+							$arrErrors = $adotanteModel->getErrors();
+							foreach ($arrErrors as $key => $value) {
+								$model->addError($key, array_shift($value));
+							}
+							return $this->render('forms/RegisterForm', [
+								'model' => $model,
+							]);
 						}
 					}
 				} else if($strTypeRole == 'Protetor'){
@@ -152,13 +161,51 @@ class SiteController extends Controller
 						if($protetorModel->validate()){
 							// $adotanteModel->save();
 							// $fkModel = $adotanteModel;
+						} else {
+							$arrErrors = $protetorModel->getErrors();
+							foreach ($arrErrors as $key => $value) {
+								$model->addError($key, array_shift($value));
+							}
+							return $this->render('forms/RegisterForm', [
+								'model' => $model,
+							]);
 						}
 					}
 				}
-				$fkModel->dtCriacao = new Expression('NOW()');
-				$fkModel->dtAtualizacao = new Expression('NOW()');
+				$enderecoModel = new Endereco(['scenario' => 'register']);
+				$arrEnderecoData = [
+					'Endereco' =>[
+						'strLogradouro' => $postArgs['strLogradouro'],
+						'nNumero' => $postArgs['nNumero'],
+						'strBairro' => $postArgs['strBairro'],
+						'strComplemento' => $postArgs['strComplemento'],
+						'nCidadeID' => (int)$postArgs['strIdCidade'],
+						'dtCriacao' => new Expression('NOW()'),
+						'dtAtualizacao' => new Expression('NOW()')
+					]
+				];
+				if($enderecoModel->load($arrEnderecoData)){
+					if($enderecoModel->validate()){
+						exit('Passou!!');
+						// $adotanteModel->save();
+						// $fkModel = $adotanteModel;
+					} else {
+						$arrErrors = $enderecoModel->getErrors();
+						foreach ($arrErrors as $key => $value) {
+							$model->addError($key, array_shift($value));
+						}
+						return $this->render('forms/RegisterForm', [
+							'model' => $model,
+						]);
+					}
+				}
+				// exit('Não Passou!!');
 
-				exit('Foi');
+
+				// exit(var_dump($postArgs));
+				// $fkModel->dtCriacao = new Expression('NOW()');
+				// $fkModel->dtAtualizacao = new Expression('NOW()');
+
 
 				// if($model->saveNewUser(Yii::$app->request->post(), $fkModel, $xxx, $strTypeRole){
 				// 	return $this->goHome();
