@@ -83,7 +83,7 @@ AppAsset::register($this);
             
 
             Yii::$app->user->isGuest ? (
-                ['label' => 'SignIn', 'url' => ['/site/login']]
+                ['label' => 'Login', 'url' => ['/site/login']]
                 // ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 Html::tag('li',
@@ -91,7 +91,7 @@ AppAsset::register($this);
                     Html::submitButton(
                         // 'Logout (' . Yii::$app->user->identity->username . ')',
                         // 'SignOut (' . Yii::$app->user->identity->strNome . ')',
-                        'SignOut (' . preg_replace('~^(.*)(\s.*)$~', '$1', Yii::$app->user->identity->strNome) . ')',
+                        'Logout (' . preg_replace('~^(.*)(\s.*)$~', '$1', Yii::$app->user->identity->strNome) . ')',
                         ['class' => 'btn btn-link logout']
                     ).
                     Html::endForm()   

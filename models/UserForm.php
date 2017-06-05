@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use yii\db\Query;
+use yii\db\Expression;
+
 /**
 * UserForm
 */
@@ -15,8 +18,26 @@ class UserForm extends \yii\base\Model{
 	public $strSenha;
 	public $strTelefone;
 	public $strTelefoneAlternativo;
+	public $strTypeRole; // Não pertence a table 'user'
 
-	public $strTypeRole;
+	// Adotante
+	public $listAdotanteData;
+	public $strDetalhesLocal;
+
+	// Protetor
+	public $listProtetorData;
+
+	// Endereço
+	public $nEstadoID;
+	public $strLogradouro;
+	public $nNumero;
+	public $strBairro;
+	public $strComplemento;
+	public $nCidadeID;
+
+	public $strIdCidade;
+	public $strIdEstado;
+
 
 	/**
 	 * @inheritdoc
@@ -47,7 +68,10 @@ class UserForm extends \yii\base\Model{
 			[['strNome', 'email', 'emailAlternativo'], 'string', 'max' => 100, 'on' => 'register', 'message' => 'Este campo pode ter no máximo 100 caracteres!'],
 			[['strSenha'], 'string', 'max' => 255, 'on' => 'register', 'message' => 'A senha pode ter no máximo 255 caracteres!'],
 			[['strTelefone', 'strTelefoneAlternativo'], 'string', 'max' => 30, 'on' => 'register', 'message' => 'Este campo pode ter no máximo 30 caracteres!'],
-			[['email'], 'unique', 'on' => 'register'],
+			[['email'], 'validateEmail','on' => 'register'],
+
+			[['strIdEstado'], 'required', 'on' => 'register', 'message' => 'O estado é obrigatório!'],
+			[['strIdCidade'], 'required', 'on' => 'register', 'message' => 'A cidade é obrigatória!']
 		];
 	}
 
@@ -63,7 +87,27 @@ class UserForm extends \yii\base\Model{
 			'strTelefoneAlternativo' => 'Telefone Alternativo',
 			'strTypeRole' => 'Tipo de Cadastro',
 
+			// Adotante
+			'strDetalhesLocal' => 'Detalhes da moradia do adotante',
+			'bPossuiCriancas' => 'Possui Criancas?',
+			'bPossuiPets' => 'Já Possui Pets?',
+			'bAdotouAntes' => 'Já adotou antes?',
+
+			// Protetor
+			'bRealizaEntrega' => 'Já realizou entrega?',
+			'nEstadoID' => 'Estado',
+			'strIdCidade' => 'Cidade',
+			'strIdEstado' => 'Estado',
 		];
+	}
+
+	public function validateEmail($attributes, $params){
+		$user = User::findOne(['email' => $this->email]);
+		if(!isset($user)){
+			return true;
+		} else {
+			$this->addError('email', 'Email já utilizado!');
+		}
 	}
 
 	/**
@@ -103,6 +147,22 @@ class UserForm extends \yii\base\Model{
 				return true;
 		}
 		return false;
+	}
+
+	public function saveNewUser($postParams, $fkModel, $addressModel, $strTypeRole){
+		$this->_user = new User;
+		$this->_user->load($postParams);
+		$this->_user->dtCriacao = new Expression('NOW()');
+		$this->_user->dtAtualizacao = new Expression('NOW()');
+		if($strTypeRole == 'Adotante'){
+			$this->_user->nAdotanteID = $fkModel->nAdotanteID;
+		} elseif($strTypeRole == 'Protetor') {
+			$this->_user->nProtetorID = $fkModel->nProtetorID;
+		}
+		// Falta o endereco
+
+		// $this->_user->save();
+		// return $this->login();
 	}
 }
 

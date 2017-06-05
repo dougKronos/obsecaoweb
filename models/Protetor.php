@@ -32,8 +32,9 @@ class Protetor extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
-			[['bRealizaEntrega'], 'integer'],
-			[['dtCriacao', 'dtAtualizacao'], 'safe'],
+			[['bRealizaEntrega'], 'required', 'on' => 'register'],
+			[['bRealizaEntrega'], 'integer', 'on' => 'register']
+			// [['dtCriacao', 'dtAtualizacao'], 'safe'],
 		];
 	}
 
@@ -42,10 +43,10 @@ class Protetor extends \yii\db\ActiveRecord{
 	 */
 	public function attributeLabels(){
 		return [
-			'nProtetorID' => 'N Protetor ID',
-			'bRealizaEntrega' => 'B Realiza Entrega',
-			'dtCriacao' => 'Dt Criacao',
-			'dtAtualizacao' => 'Dt Atualizacao',
+			'nProtetorID' => 'ID Protetor',
+			'bRealizaEntrega' => 'Já realizou entrega',
+			'dtCriacao' => 'Data de Registro',
+			'dtAtualizacao' => 'Data de Atualização',
 		];
 	}
 

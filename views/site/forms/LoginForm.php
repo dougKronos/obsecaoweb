@@ -46,7 +46,18 @@ $this->title = 'Login';
 			z-index:-1;
 			border-radius:7px;
 		}
-
+		.profile-link{
+			border:1px solid black;
+			border-radius:3px;
+			padding:4px;
+			background-color:#5C6199;
+		}
+		.has-success .control-label{
+			background-color:#a7da71;
+			padding-left:5px;
+			padding-right:5px;
+			border-radius:5px;
+		}
 	</style>
 	<?=	Html::style('#userform-email{width:400px;}#userform-strsenha{width:400px;}.registerLink{display:inline-block;margin-left:15px;}.registerLink > a{color:#FFF; text-decoration:none;}') ?>
 	<h1><?= Html::encode($this->title) ?></h1>
@@ -60,12 +71,11 @@ $this->title = 'Login';
             <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary']) ?>
 	    	<?=	Html::tag(
 	    		'div', 
-	    		Html::a('SignUp',	['site/register'],	['class' =>	'profile-link']),
+	    		Html::a('Nova Conta', ['site/register'], ['class' =>	'profile-link']),
 	    		['class' =>	'registerLink']
 	    	) ?>
         </div>
     <?php ActiveForm::end(); ?>
-    <?php //var_dump($model->getError()); ?>
 
 
-</div><!-- site-form-LoginForm -->
+</div>

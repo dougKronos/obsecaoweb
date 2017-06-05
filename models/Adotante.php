@@ -37,9 +37,10 @@ class Adotante extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
-			[['bPossuiCriancas', 'bPossuiPets', 'bAdotouAntes'], 'integer'],
-			[['dtCriacao', 'dtAtualizacao'], 'safe'],
-			[['strDetalhesLocal'], 'string', 'max' => 255],
+			[['strDetalhesLocal'], 'string', 'max' => 255, 'on' => 'register'],
+			[['strDetalhesLocal', 'bPossuiCriancas', 'bPossuiPets', 'bAdotouAntes'], 'required', 'on' => 'register'],
+			[['bPossuiCriancas', 'bPossuiPets', 'bAdotouAntes'], 'integer', 'on' => 'register']
+			// [['dtCriacao', 'dtAtualizacao'], 'safe'],
 		];
 	}
 
@@ -48,13 +49,14 @@ class Adotante extends \yii\db\ActiveRecord{
 	 */
 	public function attributeLabels(){
 		return [
-			'nAdotanteID' => 'N Adotante ID',
-			'strDetalhesLocal' => 'Str Detalhes Local',
-			'bPossuiCriancas' => 'B Possui Criancas',
-			'bPossuiPets' => 'B Possui Pets',
-			'bAdotouAntes' => 'B Adotou Antes',
-			'dtCriacao' => 'Dt Criacao',
-			'dtAtualizacao' => 'Dt Atualizacao',
+			'nAdotanteID' => 'ID Adotante',
+			'strDetalhesLocal' => 'Detalhes da moradia do adotante',
+			'bPossuiCriancas' => 'Possui Criancas?',
+			'bPossuiPets' => 'Já Possui Pets?',
+			'bAdotouAntes' => 'Já adotou antes?',
+			
+			'dtCriacao' => 'Data de Registro',
+			'dtAtualizacao' => 'Data de Atualização',
 		];
 	}
 
