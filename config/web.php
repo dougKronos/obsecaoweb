@@ -12,7 +12,8 @@ $config = [
             'allowedIPs' => ['*']
         ],
         'models' => [
-            'class' => 'app\models\UserForm'
+            'class' => 'app\models\UserForm',
+            'class' => 'app\models\AnuncioForm',
         ]
     ], 
     'controllerMap' => [

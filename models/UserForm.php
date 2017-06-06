@@ -158,7 +158,6 @@ class UserForm extends \yii\base\Model{
 
 	public function saveNewUser($postParams, $nFkModelID, $nEnderecoID, $strTypeRole){
 		$this->_user = new User();
-		// $this->_user->strNome = 
 
 		$this->_user->load($postParams);
 		$this->_user->strSenha = password_hash($postParams['User']['strSenha'], PASSWORD_DEFAULT);

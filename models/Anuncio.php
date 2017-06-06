@@ -34,11 +34,11 @@ class Anuncio extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
-			[['bAprovado', 'nCaoID'], 'integer'],
-			[['dtCriacao', 'dtAtualizacao'], 'safe'],
+			// [['bAprovado', 'nCaoID'], 'integer'],
+			// [['dtCriacao', 'dtAtualizacao'], 'safe'],
 			[['strTitulo'], 'string', 'max' => 50],
 			[['strDescricao'], 'string', 'max' => 255],
-			[['nCaoID'], 'exist', 'skipOnError' => true, 'targetClass' => Cao::className(), 'targetAttribute' => ['nCaoID' => 'nCaoID']],
+			// [['nCaoID'], 'exist', 'skipOnError' => true, 'targetClass' => Cao::className(), 'targetAttribute' => ['nCaoID' => 'nCaoID']],
 		];
 	}
 
@@ -48,9 +48,9 @@ class Anuncio extends \yii\db\ActiveRecord{
 	public function attributeLabels(){
 		return [
 			'nAnuncioID' => 'N Anuncio ID',
-			'bAprovado' => 'B Aprovado',
-			'strTitulo' => 'Str Titulo',
-			'strDescricao' => 'Str Descricao',
+			// 'bAprovado' => 'B Aprovado',
+			'strTitulo' => 'Titulo do Anúncio:',
+			'strDescricao' => 'Descricao do Anúncio:',
 			'nCaoID' => 'N Cao ID',
 			'dtCriacao' => 'Dt Criacao',
 			'dtAtualizacao' => 'Dt Atualizacao',
