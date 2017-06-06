@@ -99,6 +99,12 @@ class UserForm extends \yii\base\Model{
 			'nEstadoID' => 'Estado',
 			'strIdCidade' => 'Cidade',
 			'strIdEstado' => 'Estado',
+
+			// Endereço
+			'strLogradouro' => 'Logradouro',
+			'nNumero' => 'Número',
+			'strBairro' => 'Bairro',
+			'strComplemento' => 'Complemento'
 		];
 	}
 
@@ -150,20 +156,24 @@ class UserForm extends \yii\base\Model{
 		return false;
 	}
 
-	public function saveNewUser($postParams, $fkModel, $addressModel, $strTypeRole){
-		$this->_user = new User;
+	public function saveNewUser($postParams, $nFkModelID, $nEnderecoID, $strTypeRole){
+		$this->_user = new User();
+		// $this->_user->strNome = 
+
 		$this->_user->load($postParams);
+		$this->_user->strSenha = password_hash($postParams['User']['strSenha'], PASSWORD_DEFAULT);
+		$this->_user->nEnderecoID = $nEnderecoID;
 		$this->_user->dtCriacao = new Expression('NOW()');
 		$this->_user->dtAtualizacao = new Expression('NOW()');
 		if($strTypeRole == 'Adotante'){
-			$this->_user->nAdotanteID = $fkModel->nAdotanteID;
+			$this->_user->nAdotanteID = $nFkModelID;
 		} elseif($strTypeRole == 'Protetor') {
-			$this->_user->nProtetorID = $fkModel->nProtetorID;
+			$this->_user->nProtetorID = $nFkModelID;
 		}
 		// Falta o endereco
 
-		// $this->_user->save();
-		// return $this->login();
+		$this->_user->save();
+		return true;
 	}
 }
 

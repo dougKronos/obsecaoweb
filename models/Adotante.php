@@ -37,6 +37,7 @@ class Adotante extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
+			[['strDetalhesLocal'], 'required', 'on'=>'register', 'message' => 'Os detalhes da moradia são obrigatórios!'],
 			[['strDetalhesLocal'], 'string', 'max' => 255, 'on' => 'register'],
 			[['strDetalhesLocal', 'bPossuiCriancas', 'bPossuiPets', 'bAdotouAntes'], 'required', 'on' => 'register'],
 			[['bPossuiCriancas', 'bPossuiPets', 'bAdotouAntes'], 'integer', 'on' => 'register']

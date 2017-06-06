@@ -33,7 +33,7 @@ class Endereco extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
-			[['strLogradouro'], 'required', 'on' => 'register', 'message' => 'O endereço é obrigatório!'],
+			[['strLogradouro'], 'required', 'on' => 'register', 'message' => 'O logradouro é obrigatório!'],
 			[['nNumero'], 'required', 'on' => 'register', 'message' => 'O número é obrigatório!'],
 			[['strBairro'], 'required', 'on' => 'register', 'message' => 'O bairro é obrigatório!'],
 			// [['nNumero', 'nCidadeID'], 'integer'],

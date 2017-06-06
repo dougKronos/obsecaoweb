@@ -113,6 +113,9 @@ $this->title = 'Registrar Conta';
 			padding-right:5px;
 			border-radius:5px;
 		}
+		.divisorRight{
+			clear:right;
+		}
 		.divisorLeft{
 			clear:left;
 		}
@@ -171,12 +174,6 @@ $this->title = 'Registrar Conta';
 						<option ng-repeat="cidade in arrCidade[idEstado]" value="{{cidade.nCidadeID}}">{{cidade.strNome}}</option>
 					</select>'
 
-
-
-					
-					
-
-
 					,['class'=>'fields1', 'ng-controller'=>'checkStCyCtrl']);
 			echo
 				Html::tag('div',
@@ -191,12 +188,7 @@ $this->title = 'Registrar Conta';
 						'mask' => '999999'
 					]).
 					$form->field($model, 'strBairro')->textInput().
-					$form->field($model, 'strComplemento')->textInput().
-					$form->field($model, 'strDetalhesLocal')->textarea(['rows' => '6']).
-
-					'<div class="form-group">'.
-						Html::submitButton(Yii::t('app', 'Registrar'), ['class' => 'btn btn-primary']).
-					'</div>'
+					$form->field($model, 'strComplemento')->textInput()
 					,['class'=>'fields2']);
 
 			echo Html::tag('div', '',['class'=>'divisorLeft']);
@@ -207,13 +199,18 @@ $this->title = 'Registrar Conta';
 			echo Html::tag('div', '',['class'=>'divisorLeft']);
 
 			$listAdotante = [
-				0 => 'bPossuiCriancas',
-				1 => 'bPossuiPets',
-				2 => 'bAdotouAntes'
+				0 => 'Possui criancas?',
+				1 => 'Já possui Pets?',
+				2 => 'Já adotou antes?'
 			];
 			echo Html::tag('div',
 				$form->field($model, 'listAdotanteData')->checkboxList($listAdotante, ['separator'=>'<br/>', 'visible' => $model->strTypeRole == '2'])->label(false)
-			,['class'=>'fields4']);
+			,['class'=>'fields4']).
+			$form->field($model, 'strDetalhesLocal')->textarea(['rows' => '3']).
+			'<div style="height:40px;width:100%;"></div>'.
+			'<div class="form-group">'.
+				Html::submitButton(Yii::t('app', 'Registrar'), ['class' => 'btn btn-primary divisorRight']).
+			'</div>';
 		?>
 
 
@@ -254,6 +251,13 @@ $this->title = 'Registrar Conta';
 		});
 		$('label[for="userform-stridestado"]').after($('#estadoSelect'));
 		$('label[for="userform-stridcidade"]').after($('#cidadeSelect'));
+		
+		$('#estadoSelect').change(function(){
+			$('#userform-stridestado').focus().blur();
+		});
+		$('#cidadeSelect').change(function(){
+			$('#userform-stridcidade').focus().blur();
+		});
 	</script>
 
 </div><!-- site-form-RegisterForm -->

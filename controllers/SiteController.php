@@ -79,10 +79,22 @@ class SiteController extends Controller
 		if (!Yii::$app->user->isGuest) {
 			return $this->goHome();
 		}
-
+		// exit(var_dump(Yii::$app->request->post()));
 		$model = new UserForm(['scenario' => 'login']);
 		if ($model->load(Yii::$app->request->post())) {
 			if ($model->login())            
+				return $this->goHome();
+		}
+		return $this->render('forms/LoginForm', [
+			'model' => $model,
+		]);
+	}
+
+	public function actionAfterLogin(){
+		$model = new UserForm(['scenario' => 'login']);
+		exit(var_dump(Yii::$app->request->post()));
+		if($model->load(Yii::$app->request->post())){
+			if($model->login())
 				return $this->goHome();
 		}
 		return $this->render('forms/LoginForm', [
@@ -100,8 +112,8 @@ class SiteController extends Controller
 			return $this->goHome();
 		}
 
+		// exit(var_dump(Yii::$app->request->post()['UserForm']));
 		$model = new UserForm(['scenario' => 'register']);
-		// exit(var_dump(Yii::$app->request->post()));
 		if ($model->load(Yii::$app->request->post())) {
 			if($model->validate()){
 				$fkModel = NULL;
@@ -111,28 +123,34 @@ class SiteController extends Controller
 				if($strTypeRole == 'Adotante'){
 					$adotanteModel = new Adotante(['scenario' => 'register']);
 
+					// exit(var_dump($postArgs));
 					$arrBooleans = $postArgs['listAdotanteData'];
 					$postData = [
 						'Adotante' => [
-							'strDetalhesLocal' => $postArgs['strDetalhesLocal'],
 							'bPossuiCriancas' => 0,
 							'bPossuiPets' => 0,
 							'bAdotouAntes' => 0,
 						]
 					];
-					foreach ($arrBooleans as $value) {
-						if($value == 0){
-							$postData['Adotante']['bPossuiCriancas'] = 1;
-						} elseif ($value == 1) {
-							$postData['Adotante']['bPossuiPets'] = 1;
-						} elseif ($value == 2) {
-							$postData['Adotante']['bAdotouAntes'] = 1;
+					if(!is_string($arrBooleans)){
+						foreach ($arrBooleans as $value) {
+							if($value == 0){
+								$postData['Adotante']['bPossuiCriancas'] = 1;
+							} elseif ($value == 1) {
+								$postData['Adotante']['bPossuiPets'] = 1;
+							} elseif ($value == 2) {
+								$postData['Adotante']['bAdotouAntes'] = 1;
+							}
 						}
 					}
+					$postData['Adotante']['strDetalhesLocal'] = $postArgs['strDetalhesLocal'];
+
 					if($adotanteModel->load($postData)){
 						if($adotanteModel->validate()){
+							$adotanteModel->dtCriacao = new Expression('NOW()');
+							$adotanteModel->dtAtualizacao = new Expression('NOW()');
 							// $adotanteModel->save();
-							// $fkModel = $adotanteModel;
+							$fkModel = $adotanteModel;
 						} else {
 							$arrErrors = $adotanteModel->getErrors();
 							foreach ($arrErrors as $key => $value) {
@@ -152,15 +170,19 @@ class SiteController extends Controller
 							'bRealizaEntrega' => 0
 						]
 					];
-					foreach ($arrBooleans as $value) {
-						if($value == 0){
-							$postData['Protetor']['bRealizaEntrega'] = 1;
+					if(!is_string($arrBooleans)){
+						foreach ($arrBooleans as $value) {
+							if($value == 0){
+								$postData['Protetor']['bRealizaEntrega'] = 1;
+							}
 						}
 					}
 					if($protetorModel->load($postData)){
 						if($protetorModel->validate()){
-							// $adotanteModel->save();
-							// $fkModel = $adotanteModel;
+							$protetorModel->dtCriacao = new Expression('NOW()');
+							$protetorModel->dtAtualizacao = new Expression('NOW()');
+							// $protetorModel->save();
+							$fkModel = $protetorModel;
 						} else {
 							$arrErrors = $protetorModel->getErrors();
 							foreach ($arrErrors as $key => $value) {
@@ -179,14 +201,40 @@ class SiteController extends Controller
 						'nNumero' => $postArgs['nNumero'],
 						'strBairro' => $postArgs['strBairro'],
 						'strComplemento' => $postArgs['strComplemento'],
-						'nCidadeID' => (int)$postArgs['strIdCidade'],
-						'dtCriacao' => new Expression('NOW()'),
-						'dtAtualizacao' => new Expression('NOW()')
+						'nCidadeID' => (int)$postArgs['strIdCidade']
 					]
 				];
 				if($enderecoModel->load($arrEnderecoData)){
 					if($enderecoModel->validate()){
-						exit('Passou!!');
+						// Aqui está tudo certo!!!
+						$enderecoModel->dtCriacao = new Expression('NOW()');
+						$enderecoModel->dtAtualizacao = new Expression('NOW()');
+						$enderecoModel->save();
+						$fkModel->save();
+						if($strTypeRole == 'Protetor'){
+							$nProtetorAdotanteID = $fkModel->nProtetorID;
+						} else {
+							$nProtetorAdotanteID = $fkModel->nAdotanteID;
+						}
+						$allUserDataFinal = [
+							'User' => $postArgs
+						];
+						if($model->saveNewUser($allUserDataFinal, $nProtetorAdotanteID, $enderecoModel->nEnderecoID, $strTypeRole)){
+							$model = new UserForm(['scenario' => 'login']);
+							if($model->load([
+								'UserForm' => $postArgs
+							])){
+								if($model->login()){
+									return $this->goHome();
+								} else {
+									exit(var_dump('Login não deu'));
+								}
+							} else {
+								exit(var_dump('Load não deu'));
+							}
+						}
+						
+
 						// $adotanteModel->save();
 						// $fkModel = $adotanteModel;
 					} else {
@@ -199,6 +247,8 @@ class SiteController extends Controller
 						]);
 					}
 				}
+
+
 				// exit('Não Passou!!');
 
 
