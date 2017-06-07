@@ -13,6 +13,20 @@ $this->title = 'Registrar Anuncio';
 	#anuncioform-csexo > label:last-child{
 		margin-left:10px;
 	}
+	.register-anuncioForm{
+		position:relative;
+	}
+	.register-anuncioForm::after{
+		width:425px;
+		position:absolute;
+		left:-10px;
+		height:calc(100% - 35px);
+		content:'';
+		background-color:#73e168;
+		top:45px;
+		z-index:-1;
+		border-radius:4px;
+	}
 </style>
 <div class="register-anuncioForm">
 	<h1><?= Html::encode($this->title) ?></h1>
@@ -47,23 +61,25 @@ $this->title = 'Registrar Anuncio';
 		?>
 		<?= $form->field($model, 'nIdadeMes')->dropdownList([
 				'' => 'Selecione...',
-				1 => 'Janeiro',
-				2 => 'Fevereiro',
-				3 => 'Março',
-				4 => 'Abril',
-				5 => 'Maio',
-				6 => 'Junho',
-				7 => 'Julho',
-				8 => 'Agosto',
-				9 => 'Setembro',
-				10 => 'Outubro',
-				11 => 'Novembro',
-				12 => 'Dezembro'
+				0 => 'Nenhum mês',
+				1 => '1 mês',
+				2 => '2 meses',
+				3 => '3 meses',
+				4 => '4 meses',
+				5 => '5 meses',
+				6 => '6 meses',
+				7 => '7 meses',
+				8 => '8 meses',
+				9 => '9 meses',
+				10 => '10 meses',
+				11 => '11 meses'
 			], ['style'=>'width:150px;'])
 		?>
 		<?= $form->field($model, 'strCaracteristicas')->textarea(['rows' => '3', 'style'=>'width:400px;']) ?>
 		<?= $form->field($model, 'strComportamentais')->textarea(['rows' => '3', 'style'=>'width:400px;']) ?>
 		
+		<?= $form->field($model, 'imageFile')->fileInput() ?>
+
 		<?php
 		// 'cSexo'
 		// 'strRaca'

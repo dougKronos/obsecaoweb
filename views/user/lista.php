@@ -10,6 +10,15 @@ use yii\grid\GridView;
 $this->title = 'Usuários';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style type="text/css">
+	.table-striped > tbody > tr:nth-of-type(2n){
+		color:black !important;
+		font-weight:bold;
+	}
+	.table > thead:nth-child(1) > tr{
+		background-color: #e37f7f;
+	}
+</style>
 <div class="user-lista">
      <h1><?= Html::encode($this->title) ?></h1>
 

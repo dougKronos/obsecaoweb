@@ -100,14 +100,5 @@ class Endereco extends \yii\db\ActiveRecord{
 			$arrEstadosFinal[] = $estado;
 		}
 		return json_encode($arrEstadosFinal);
-
-
-		// $arrCidades = new Query()
-		// 	->select([
-		// 		'nCidadeID',
-		// 		'strNome',
-		// 		'nEstadoID'
-		// 	])
-		// 	->from('cidade');
 	}
 }

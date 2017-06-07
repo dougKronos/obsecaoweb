@@ -29,10 +29,21 @@ class AnuncioController extends \yii\web\Controller{
 	}
 
 	public function actionRegister(){
-		$model = new AnuncioForm();
+		if(\Yii::$app->user->isGuest)
+			return $this->goHome();
+		if(!\Yii::$app->user->identity)
+			return $this->goHome();
+		if(isset(\Yii::$app->user->identity->nProtetorID))
+			return $this->goHome();
 
+		$anuncioModel = new AnuncioForm(['scenario' => 'register']);
+		if($anuncioModel->load(\Yii::$app->request->post())){
+			if($anuncioModel->validate()){
+
+			}
+		}
 		return $this->render('registerAnuncio', [
-			'model' => $model,
+			'model' => $anuncioModel,
 		]);
 
 

@@ -19,8 +19,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="anuncio-lista">
     <h1><?= Html::encode($this->title) ?></h1>
 
-	<?php $form = ActiveForm::begin(['action' => ['/anuncio/register']], ['class'=>'formRegister', 'visible' => true]); ?>
-		<?= Html::submitButton(Yii::t('app', 'Registrar novo anuncio'), ['class' => 'btn btn-primary']) ?>
+	<?php 
+		$form = ActiveForm::begin(['action' => ['/anuncio/register']], ['class'=>'formRegister']); ?>
+	<?php if((!\Yii::$app->user->isGuest) && (isset(\Yii::$app->user->identity->nAdotanteID) || Yii::$app->user->identity->isAdministrador())):
+	?>
+		<?= Html::submitButton(Yii::t('app', 'Registrar novo anuncio'), [
+			'class' => 'btn btn-primary', 'visible' => false])
+		?>
+	<?php endif; ?>
 	<?php ActiveForm::end(); ?>
 <?php 
 	$grid = GridView::widget([

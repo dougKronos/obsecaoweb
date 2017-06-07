@@ -54,7 +54,7 @@ class AnuncioForm extends \yii\base\Model{
 			[['strDescricao'], 'required', 'on' => 'register', 'message' => 'A descrição é obrigatória!'],
 			[['strTitulo'], 'string', 'max' => 50, 'on' => 'register', 'message' => 'O máximo de carateres é 50!'],
 			[['strDescricao'], 'string', 'max' => 255, 'on' => 'register', 'message' => 'O máximo de carateres é 255!'],
-			[['nCaoID'], 'exist', 'skipOnError' => true, 'targetClass' => Cao::className(), 'targetAttribute' => ['nCaoID' => 'nCaoID']],
+			// [['nCaoID'], 'exist', 'skipOnError' => true, 'targetClass' => Cao::className(), 'targetAttribute' => ['nCaoID' => 'nCaoID']],
 
 			[['strNome'], 'required', 'on' => 'register', 'message' => 'O nome do cão é obrigatório!'],
 
@@ -66,7 +66,7 @@ class AnuncioForm extends \yii\base\Model{
 			[['strCaracteristicas'], 'required', 'on' => 'register', 'message' => 'As características físicas do cão são obrigatórias!'],
 			[['strComportamentais'], 'required', 'on' => 'register', 'message' => 'As características comportamentais do cão são obrigatórias!'],
 
-			[['strFoto'], 'required', 'on' => 'register', 'message' => 'O envio de foto é obrigatório!']
+			[['imageFile'], 'required', 'on' => 'register', 'message' => 'O envio de foto é obrigatório!']
 		];
 	}
 
@@ -89,7 +89,7 @@ class AnuncioForm extends \yii\base\Model{
 			'nIdadeAno' => Yii::t('app', 'Anos de idade do cão:'),
 			'nIdadeMes' => Yii::t('app', 'Meses de idade do cão:'),
 			
-			'strCaracteristicas' => Yii::t('app', 'dCaracterísticas Físicas:'),
+			'strCaracteristicas' => Yii::t('app', 'Características Físicas:'),
 			'strComportamentais' => Yii::t('app', 'Características Comportamentais:'),
 		];
 	}

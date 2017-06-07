@@ -90,18 +90,6 @@ class SiteController extends Controller
 		]);
 	}
 
-	public function actionAfterLogin(){
-		$model = new UserForm(['scenario' => 'login']);
-		exit(var_dump(Yii::$app->request->post()));
-		if($model->load(Yii::$app->request->post())){
-			if($model->login())
-				return $this->goHome();
-		}
-		return $this->render('forms/LoginForm', [
-			'model' => $model,
-		]);
-	}
-
 	/**
 	 * Login action.
 	 *
@@ -226,11 +214,7 @@ class SiteController extends Controller
 							])){
 								if($model->login()){
 									return $this->goHome();
-								} else {
-									exit(var_dump('Login não deu'));
 								}
-							} else {
-								exit(var_dump('Load não deu'));
 							}
 						}
 						
@@ -242,10 +226,10 @@ class SiteController extends Controller
 						foreach ($arrErrors as $key => $value) {
 							$model->addError($key, array_shift($value));
 						}
-						return $this->render('forms/RegisterForm', [
-							'model' => $model,
-						]);
 					}
+					return $this->render('forms/RegisterForm', [
+						'model' => $model,
+					]);
 				}
 
 
