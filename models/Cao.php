@@ -43,14 +43,14 @@ class Cao extends \yii\db\ActiveRecord{
 	 */
 	public function rules(){
 		return [
-			[['nIdadeAno', 'nIdadeMes', 'strCaracteristicas', 'strComportamentais', 'nProtetorID', 'nAdotanteID'], 'integer'],
-			[['nProtetorID'], 'required'],
-			[['dtCriacao', 'dtAtualizacao'], 'safe'],
+			// [['nIdadeAno', 'nIdadeMes', 'strCaracteristicas', 'strComportamentais', 'nProtetorID'], 'integer'],
+			// [['nProtetorID'], 'required'],
+			// [['dtCriacao', 'dtAtualizacao'], 'safe'],
 			[['strNome', 'strRaca'], 'string', 'max' => 50],
 			[['cSexo'], 'string', 'max' => 1],
 			[['strNomeFoto'], 'string', 'max' => 100],
-			[['nAdotanteID'], 'exist', 'skipOnError' => true, 'targetClass' => Adotante::className(), 'targetAttribute' => ['nAdotanteID' => 'nAdotanteID']],
-			[['nProtetorID'], 'exist', 'skipOnError' => true, 'targetClass' => Protetor::className(), 'targetAttribute' => ['nProtetorID' => 'nProtetorID']],
+			// [['nAdotanteID'], 'exist', 'skipOnError' => true, 'targetClass' => Adotante::className(), 'targetAttribute' => ['nAdotanteID' => 'nAdotanteID']],
+			// [['nProtetorID'], 'exist', 'skipOnError' => true, 'targetClass' => Protetor::className(), 'targetAttribute' => ['nProtetorID' => 'nProtetorID']],
 		];
 	}
 

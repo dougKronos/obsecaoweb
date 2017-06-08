@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\UserForm */
@@ -17,7 +17,7 @@ $this->title = 'Registrar Anuncio';
 		position:relative;
 	}
 	.register-anuncioForm::after{
-		width:425px;
+		width:625px;
 		position:absolute;
 		left:-10px;
 		height:calc(100% - 35px);
@@ -27,11 +27,32 @@ $this->title = 'Registrar Anuncio';
 		z-index:-1;
 		border-radius:4px;
 	}
+	.col-lg-1{
+		width:17%;
+	}
+	#register-cao-form{
+		padding-top:20px;
+	}
+	.help-block.help-block-error {
+		width:605px;
+		text-align:right;
+	}
 </style>
 <div class="register-anuncioForm">
 	<h1><?= Html::encode($this->title) ?></h1>
 	
-	<?php $form = ActiveForm::begin(); ?>
+	<?php $form = ActiveForm::begin([
+		'id' => 'register-cao-form',
+		'method' => 'post',
+		'action' => ['anuncio/register'],
+		'layout' => 'horizontal',
+		'options' => ['enctype' => 'multipart/form-data'],
+		'fieldConfig' => [
+            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n
+            <div class=\"col-lg-8 messageWarning\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+        ],
+	]); ?>
 		<?= $form->field($model, 'strTitulo')->textInput(['style'=>'width:400px;']) ?>
 		<?= $form->field($model, 'strDescricao')->textarea(['rows' => '3', 'style'=>'width:400px;']) ?>
 		<?= $form->field($model, 'strNome')->textInput(['style'=>'width:400px;']) ?>
@@ -39,9 +60,18 @@ $this->title = 'Registrar Anuncio';
 		
 		<?php 
 			$cSexoList = array('M' => 'Masculino', 'F' => 'Feminino');
-			$model->cSexo = 'M';
+			$cSexo = 'M';
 		?>
-		<?= $form->field($model, 'cSexo')->radioList($cSexoList) ?>
+		
+		<?= $form->field($model, 'cSexo')->dropdownList([
+			'M' => 'Masculino',
+			'F' => 'Feminino'
+			], ['style'=>'width:150px;'])
+		?>
+
+		<?php //echo $form->field($model, 'cSexo')->textInput(); ?>
+		
+		<?php //echo $form->field($model, 'cSexo')->radioList($cSexoList); ?>
 		<?= $form->field($model, 'nIdadeAno')->dropdownList([
 				'' => 'Selecione...',
 				0 => 'Nenhum Ano',
@@ -92,7 +122,7 @@ $this->title = 'Registrar Anuncio';
 
 
 
-		<?= Html::submitButton(Yii::t('app', 'Registrar'), ['class' => 'btn btn-primary']) ?>
+		<?= Html::submitButton(Yii::t('app', 'Registrar'), ['class' => 'btn btn-primary', 'name' => 'save-button']) ?>
 	<?php ActiveForm::end(); ?>
 
 </div>

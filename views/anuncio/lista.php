@@ -7,6 +7,7 @@
 use yii\bootstrap\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 $this->title = 'Anúncios';
 $this->params['breadcrumbs'][] = $this->title;
@@ -21,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<?php 
 		$form = ActiveForm::begin(['action' => ['/anuncio/register']], ['class'=>'formRegister']); ?>
-	<?php if((!\Yii::$app->user->isGuest) && (isset(\Yii::$app->user->identity->nAdotanteID) || Yii::$app->user->identity->isAdministrador())):
+	<?php if((!\Yii::$app->user->isGuest) && (isset(\Yii::$app->user->identity->nProtetorID) || Yii::$app->user->identity->isAdministrador())):
 	?>
 		<?= Html::submitButton(Yii::t('app', 'Registrar novo anuncio'), [
 			'class' => 'btn btn-primary', 'visible' => false])
@@ -31,7 +32,32 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php 
 	$grid = GridView::widget([
 		'dataProvider' => $provider,
-		'emptyText' => 'Nenhum anúncio ainda foi cadastrado.' 
+		'emptyText' => 'Nenhum anúncio ainda foi cadastrado ou liberado.',
+		'columns' => [
+			['class' => 'yii\grid\SerialColumn'],
+			'Título',
+			'Descrição',
+			// 'nCaoID'
+			'Data Registro',
+			[
+				'header' => 'Visualizar',
+				'class' => 'yii\grid\ActionColumn',
+				'template' => '{view}',
+				'buttons' => [
+					'view' => function($url, $model, $key){
+						// exit(var_dump($model['id']));
+						return 
+							Html::a(
+								'<span class="glyphicon glyphicon-search"></span>', 
+								Url::to(['anuncio/detalhe',
+									'nAnuncioID' => $model['nAnuncioID']
+								]),
+								['title' => Yii::t('yii', 'Visualizar')]
+							);
+					}
+				]
+			]
+		]
 	]);
 
 	echo $grid;

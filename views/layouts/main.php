@@ -35,6 +35,8 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+    // exit(Yii::$app->user->identity->getId());
+
     NavBar::begin([
         'brandLabel' => 'Obsecao',
         'brandUrl' => Yii::$app->homeUrl,

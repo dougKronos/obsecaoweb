@@ -30,7 +30,9 @@ class AnuncioForm extends \yii\base\Model{
 	public $strDescricao;
 	public $strNome;
 	public $strRaca;
+
 	public $cSexo;
+
 	public $nIdadeAno;
 	public $nIdadeMes;
 	public $strCaracteristicas;
@@ -50,6 +52,8 @@ class AnuncioForm extends \yii\base\Model{
 		return [
 			// [['bAprovado', 'nCaoID'], 'integer'],
 			// [['dtCriacao', 'dtAtualizacao'], 'safe'],
+			[['imageFile'], 'validateImage', 'on' => 'register'],
+
 			[['strTitulo'], 'required', 'on' => 'register', 'message' => 'O título é obrigatório!'],
 			[['strDescricao'], 'required', 'on' => 'register', 'message' => 'A descrição é obrigatória!'],
 			[['strTitulo'], 'string', 'max' => 50, 'on' => 'register', 'message' => 'O máximo de carateres é 50!'],
@@ -66,7 +70,6 @@ class AnuncioForm extends \yii\base\Model{
 			[['strCaracteristicas'], 'required', 'on' => 'register', 'message' => 'As características físicas do cão são obrigatórias!'],
 			[['strComportamentais'], 'required', 'on' => 'register', 'message' => 'As características comportamentais do cão são obrigatórias!'],
 
-			[['imageFile'], 'required', 'on' => 'register', 'message' => 'O envio de foto é obrigatório!']
 		];
 	}
 
@@ -88,10 +91,19 @@ class AnuncioForm extends \yii\base\Model{
 			'cSexo' => Yii::t('app', 'Sexo do cão:'),
 			'nIdadeAno' => Yii::t('app', 'Anos de idade do cão:'),
 			'nIdadeMes' => Yii::t('app', 'Meses de idade do cão:'),
-			
+
 			'strCaracteristicas' => Yii::t('app', 'Características Físicas:'),
 			'strComportamentais' => Yii::t('app', 'Características Comportamentais:'),
 		];
+	}
+
+	public function validateImage($attributes, $params){
+		$this->imageFile = UploadedFile::getInstance($this, 'imageFile');
+		if(is_string($this->imageFile) && !empty($this->imageFile)){
+			return true;
+		} else {
+			$this->addError('imageFile', 'O envio de foto é obrigatório!');
+		}
 	}
 
 	/**
@@ -101,20 +113,21 @@ class AnuncioForm extends \yii\base\Model{
 		return $this->hasOne(Cao::className(), ['nCaoID' => 'nCaoID']);
 	}
 
-	public function upload() {
+	public function uploadPhoto() {
 		if($this->getQtdCao() > 0)
 			$number = $this->getLastCao()+1;
 		else
 			$number = 1;
 
-		// if ($this->validate()) {
-			// $this->imageFile->saveAs(\Yii::getAlias('@app').'/web/images/fotosAnuncios/anuncio' . "$number." . $this->imageFile->extension);
+		$this->imageFile = UploadedFile::getInstance($this, 'imageFile');
 
-				// return true;
-		// } else {
-				// return false;
-		// }
-		return true;
+		$strPhotoName = "anuncio$number.".$this->imageFile->extension;
+		// exit(var_dump(\Yii::getAlias('@app')."/web/images/fotosAnuncios/$strPhotoName"));
+		$result = $this->imageFile->saveAs(\Yii::getAlias('@app')."/web/images/fotosAnuncios/$strPhotoName");
+		if(!$result){
+			return false;
+		}
+		return $strPhotoName;
 	}
 
 	public function getQtdCao(){

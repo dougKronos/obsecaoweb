@@ -66,7 +66,15 @@ class Anuncio extends \yii\db\ActiveRecord{
 
 	public function getGridAnuncios($nPagination){
 		return new ActiveDataProvider([
-			'query' => (new Query())->from('anuncio'),
+			'query' => (new Query())
+				->select([
+					 'nAnuncioID' => 'nAnuncioID',
+					 'Título' => 'strTitulo',
+					 'Descrição' =>'strDescricao',
+					 'nCaoID' => 'nCaoID',
+					 'Data Registro' => 'dtCriacao',
+				])
+				->from('anuncio')->where('bAprovado <> :bAprovado')->addParams([':bAprovado' => '0']),
 			'pagination' => [
 				'pageSize' => $nPagination,
 			],
@@ -75,7 +83,14 @@ class Anuncio extends \yii\db\ActiveRecord{
 	
 	public function getGridPermissoes($nPagination){
 		return new ActiveDataProvider([
-			'query' => (new Query())->from('anuncio')->where(['bAprovado' => '1']),
+			'query' => (new Query())
+				->select([
+					 'nAnuncioID' => 'nAnuncioID',
+					 'Título' => 'strTitulo',
+					 'Descrição' =>'strDescricao',
+					 'Data Registro' => 'dtCriacao',
+				])
+				->from('anuncio')->where('bAprovado = :bAprovado')->addParams([':bAprovado' => '0']),
 			'pagination' => [
 				'pageSize' => $nPagination,
 			],

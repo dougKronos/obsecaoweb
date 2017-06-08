@@ -4,6 +4,12 @@
 /* @var $this yii\web\View */
 
 $this->title = 'Obsecao';
+// use yii\db\Query;
+
+// exit(var_dump((new Query())->from('anuncio')->where(
+// 	'bAprovado = :bAprovado'
+// )->addParams([':bAprovado' => '1'])->all()));
+// ['bAprovado' => '1']
 ?>
 <div class="site-index" style="z-index:2;">
 
