@@ -6,18 +6,27 @@
 // use yii\helpers\Html;
 use yii\bootstrap\Html;
 use yii\grid\GridView;
+use yii\models\Cao;
 
 $this->title = 'Protetores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="noticia-lista">
+<div class="protetor-lista">
      <h1><?= Html::encode($this->title) ?></h1>
 
 
 <?php 
 	$grid = GridView::widget([
 		'dataProvider' => $provider,
-		'emptyText' => 'Nenhum protetor ainda foi cadastrado.' 
+		'emptyText' => 'Nenhum protetor ainda foi cadastrado.',
+		'columns' => [
+			['class' => 'yii\grid\SerialColumn'],
+			'Nome',
+			'Email',
+			'Telefone',
+			'Data Registro',
+			'Realiza Entrega',
+		]
 	]);
 
 	echo $grid;

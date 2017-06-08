@@ -91,7 +91,19 @@ class Adotante extends \yii\db\ActiveRecord{
 
 	public function getGridAdotantes($nPagination){
 		return new ActiveDataProvider([
-			'query' => (new Query())->from('adotante'),
+			'query' => (new Query())
+				->select([
+					'Detalhes Locais' => 'adotante.strDetalhesLocal',
+					'Possui criancas' => "IF(adotante.bPossuiCriancas=1,'Sim','Não')",
+					'Possui pets' => 'IF(adotante.bPossuiPets="1","Sim","Não")',
+					'Ja adotou' => 'IF(adotante.bAdotouAntes="1","Sim","Não")',
+					'Nome' => 'user.strNome',
+					'Email' => 'user.email',
+					'Telefone' => 'user.strTelefone',
+					'Data Registro' => 'adotante.dtCriacao',
+				])
+				->from('adotante')
+				->join('INNER JOIN', 'user', 'user.nAdotanteID = adotante.nAdotanteID'),
 			'pagination' => [
 				'pageSize' => $nPagination,
 			],

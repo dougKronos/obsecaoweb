@@ -17,7 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php 
 	$grid = GridView::widget([
 		'dataProvider' => $provider,
-		'emptyText' => 'Nenhum adotante ainda foi cadastrado.' 
+		'emptyText' => 'Nenhum adotante ainda foi cadastrado.',
+		'columns' => [
+			['class' => 'yii\grid\SerialColumn'],
+			'Nome',
+			'Email',
+			'Telefone',
+			'Detalhes Locais',
+			'Possui criancas',
+			'Possui pets',
+			'Ja adotou',
+			'Data Registro',
+		] 
 	]);
 
 	echo $grid;

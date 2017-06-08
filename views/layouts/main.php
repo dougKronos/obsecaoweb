@@ -11,6 +11,7 @@ use app\assets\AppAsset;
 use yii\helpers\Url;
 
 AppAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -44,6 +45,17 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    $userLogged = Yii::$app->user->identity;
+    $nProtetorID = '';
+
+    if(!!$userLogged)
+        $prot = $userLogged->getNProtetor()->one();
+    else
+        $prot = NULL;
+
+    if(!!$prot)
+        $nProtetorID = $prot->nProtetorID;
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
@@ -57,6 +69,7 @@ AppAsset::register($this);
             // ['label' => 'Anúncios', 'url' => '/index.php?r=site/anuncios'],
             // ['label' => 'Anúncios', 'url' => ['/cao/anuncios']],
             // ['label' => 'Sobre', 'url' => ['/site/about']],
+            ['label' => 'Para Adocao', 'url' => Url::to(['protetor/listacao', 'nProtetorID' => $nProtetorID]), 'visible' => (!!$userLogged && !!$prot)],
             [
              'label' => 'Gerenciar',
                 'items' => [

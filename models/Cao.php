@@ -112,7 +112,24 @@ class Cao extends \yii\db\ActiveRecord{
 
 	public function getGridCaes($nPagination){
 		return new ActiveDataProvider([
-			'query' => (new Query())->from('cao'),
+			'query' => (new Query())
+				->select([
+					'Nome' => "cao.strNome",
+					'Sexo' => "CASE {{cao}}.[[cSexo]] WHEN 'F' THEN 'Feminino' ELSE 'Masculino' END",
+					'Raca' => "cao.strRaca",
+					'nIdadeAno' => "cao.nIdadeAno",
+					'nIdadeMes' => "cao.nIdadeMes",
+					'Status Fisico' => "CASE {{cao}}.[[strCaracteristicas]] WHEN '0' THEN '--' ELSE {{cao}}.[[strCaracteristicas]] END",
+					'Comportamental' => "CASE {{cao}}.[[strComportamentais]] WHEN '0' THEN '--' ELSE {{cao}}.[[strComportamentais]] END",
+					'Foto' => "cao.strNomeFoto",
+					'Nome Protetor' => "{{user}}.[[strNome]]",
+					'Adotante' => "CASE WHEN {{cao}}.[[nAdotanteID]] IS NULL THEN 'Não Possui' ELSE {{userAdotante}}.[[strNome]] END",
+				])
+				->from('{{cao}}')
+				->join('INNER JOIN', 'protetor', 'cao.nProtetorID = protetor.nProtetorID')
+				->join('INNER JOIN', 'user', 'user.nProtetorID = protetor.nProtetorID')
+				->join('LEFT JOIN', 'adotante', 'cao.nAdotanteID = adotante.nAdotanteID')
+				->join('LEFT JOIN', 'user AS userAdotante', 'userAdotante.nAdotanteID = adotante.nAdotanteID'),
 			'pagination' => [
 				'pageSize' => $nPagination,
 			],

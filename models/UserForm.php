@@ -95,7 +95,7 @@ class UserForm extends \yii\base\Model{
 			'bAdotouAntes' => 'Já adotou antes?',
 
 			// Protetor
-			'bRealizaEntrega' => 'Já realizou entrega?',
+			'bRealizaEntrega' => 'Realiza entrega?',
 			'nEstadoID' => 'Estado',
 			'strIdCidade' => 'Cidade',
 			'strIdEstado' => 'Estado',

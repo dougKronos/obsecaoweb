@@ -1,23 +1,25 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $listCao app\models\Cao */
+/* @var $listCao app\models\Protetor */
 
 // use yii\helpers\Html;
 use yii\bootstrap\Html;
 use yii\grid\GridView;
+use yii\models\Cao;
+use yii\helpers\Url;
 
-$this->title = 'Cães';
+$this->title = 'Lista de caes para adotar';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="cao-lista">
+<div class="noticia-lista">
      <h1><?= Html::encode($this->title) ?></h1>
 
 
 <?php 
 	$grid = GridView::widget([
 		'dataProvider' => $provider,
-		'emptyText' => 'Nenhum cão ainda foi cadastrado.',
+		'emptyText' => 'Nenhum cão ainda foi registrado.',
 		'columns' => [
 			['class' => 'yii\grid\SerialColumn'],
 			'Nome',
@@ -53,7 +55,24 @@ $this->params['breadcrumbs'][] = $this->title;
 					return Html::img('@web/images/fotosAnuncios/'.$model['Foto'], ['alt' => 'fotoCao', 'style'=>'width:100px;']);
 				}
 			],
-		] 
+			'Adotado',
+			[
+				'header' => 'Adotar',
+				'class' => 'yii\grid\ActionColumn',
+				'template' => '{view}',
+				'buttons' => [
+					'view' => function($url, $model, $key){
+						// exit(var_dump($model['id']));
+						return 
+							Html::a(
+								'<span class="glyphicon glyphicon-ok"></span>', 
+								Url::to(['protetor/adotar', 'nCaoID' => $model['nCaoID']]),
+								['title' => Yii::t('yii', 'Adotar')]
+							);
+					}
+				]
+			]
+		]
 	]);
 
 	echo $grid;
